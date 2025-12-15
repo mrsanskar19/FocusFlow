@@ -1,4 +1,4 @@
-package com.example.myapp
+package com.cycberx.sleeping
 
 import io.flutter.embedding.android.FlutterActivity
 
