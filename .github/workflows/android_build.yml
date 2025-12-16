@@ -30,7 +30,7 @@ jobs:
       # --- SIGNING SETUP (Crucial for Release Builds) ---
       - name: Decode Keystore
         # This decodes the secret back into a file so Gradle can read it
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        if: secrets.KEYSTORE_BASE64 != ''
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
           
