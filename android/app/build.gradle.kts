@@ -4,14 +4,19 @@ import java.io.FileInputStream
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// 1. LOAD THE KEYSTORE PROPERTIES
 val keystoreProperties = Properties()
-val keystorePropertiesFile = rootProject.file("key.properties")
+val keystorePropertiesFile = rootProject.file("key.properties") // Looks in android/ folder
+
 if (keystorePropertiesFile.exists()) {
+    println("✅ Found key.properties at: ${keystorePropertiesFile.absolutePath}")
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+} else {
+    println("⚠️ WARNING: key.properties NOT FOUND at ${keystorePropertiesFile.absolutePath}")
+    println("   Release build will NOT be signed.")
 }
 
 android {
@@ -29,10 +34,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.cycberx.sleeping"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -41,21 +43,33 @@ android {
 
     signingConfigs {
         create("release") {
-            // Only attempt to read if the file loaded successfully
+            // 2. CONFIGURE SIGNING
+            // If key.properties was loaded, we use it.
             if (keystoreProperties.isNotEmpty()) {
                 keyAlias = keystoreProperties["keyAlias"] as String
                 keyPassword = keystoreProperties["keyPassword"] as String
-                storeFile = file(keystoreProperties["storeFile"] as String)
                 storePassword = keystoreProperties["storePassword"] as String
+
+                enableV1Signing = true
+                enableV2Signing = true
+                
+                // Resolves relative to android/app/
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                
+                println("✅ Signing Configured using key alias: $keyAlias")
+            } else {
+                println("❌ Skipping signing config - Properties missing")
             }
         }
     }
 
     buildTypes {
         getByName("release") {
-            // 3. APPLY THE SIGNING CONFIG
+            // 3. FORCE USE OF RELEASE CONFIG
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false
+            
+            // Optimization settings (Keep false for debugging signing issues)
+            isMinifyEnabled = false 
             isShrinkResources = false
         }
         getByName("debug") {
