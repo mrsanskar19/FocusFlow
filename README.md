@@ -37,9 +37,9 @@
 
 ## 📱 Screenshots
 
-| Splash Screen | Permission Setup | Dashboard (Day) | Dashboard (Night) |
+| Splash Screen | Permission Setup | Dashboard | Setting |
 | :---: | :---: | :---: | :---: |
-| <img src="assets/screenshots/splash.png" alt="Splash" width="200"/> | <img src="assets/screenshots/permissions.png" alt="Permissions" width="200"/> | <img src="assets/screenshots/dashboard_day.png" alt="Dashboard" width="200"/> | <img src="assets/screenshots/dashboard_night.png" alt="Dashboard Night" width="200"/> |
+| <img src="assets/screenshots/splash.png" alt="Splash" width="200"/> | <img src="assets/screenshots/permissions.png" alt="Permissions" width="200"/> | <img src="assets/screenshots/dashboard.png" alt="Dashboard" width="200"/> | <img src="assets/screenshots/setting.png" alt="Dashboard Night" width="200"/> |
 
 > *Note: Placeholders for screenshots. Run the app to see the beautiful UI in action!*
 
