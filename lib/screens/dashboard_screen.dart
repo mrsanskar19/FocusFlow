@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'app_picker_screen.dart';
 import 'settings_screen.dart';
 
@@ -18,10 +19,12 @@ class _DashboardScreenState extends State<DashboardScreen>
   late Animation<double> _scaleAnimation;
   late Animation<Offset> _slideAnimation;
   Timer? _ticker;
+  bool _isPremium = false;
 
   @override
   void initState() {
     super.initState();
+    _checkPremium();
 
     // 1. PULSE ANIMATION (The "Heartbeat" of the app)
     _pulseController = AnimationController(
@@ -49,6 +52,15 @@ class _DashboardScreenState extends State<DashboardScreen>
     _ticker = Timer.periodic(const Duration(minutes: 1), (timer) {
       if (mounted) setState(() {});
     });
+  }
+
+  Future<void> _checkPremium() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (mounted) {
+      setState(() {
+        _isPremium = prefs.getBool('is_premium') ?? false;
+      });
+    }
   }
 
   @override
@@ -102,14 +114,36 @@ class _DashboardScreenState extends State<DashboardScreen>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "System Status",
-                        style: TextStyle(
-                          color: textColor.withOpacity(0.5),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.0,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "System Status",
+                            style: TextStyle(
+                              color: textColor.withOpacity(0.5),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                          if (_isPremium) ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Text(
+                                "PRO",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ]
+                        ],
                       ),
                       const SizedBox(height: 4),
                       Text(

@@ -243,7 +243,9 @@ class _AppPickerScreenState extends State<AppPickerScreen> {
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child:const Icon(Icons.android, size: 32, color: Colors.grey),
+                        child: app.icon != null
+                          ? Image.memory(app.icon!, width: 32, height: 32)
+                          : const Icon(Icons.android, size: 32, color: Colors.grey),
                       ),
                     ),
                   );
