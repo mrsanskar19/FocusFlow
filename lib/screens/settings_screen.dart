@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart'; // Import Flags
+import 'subscription_screen.dart';
+import 'about_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -76,6 +78,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // --- SECTION 0: PREMIUM ---
+          Card(
+            color: Colors.amber.withOpacity(0.1),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: Colors.amber.withOpacity(0.5)),
+            ),
+            child: ListTile(
+              leading: const Icon(Icons.star_rounded, color: Colors.amber, size: 32),
+              title: const Text("Get Premium",
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.brown)),
+              subtitle: const Text("Unlock custom schedules & strict mode"),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.brown),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SubscriptionScreen()),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+
           // --- SECTION 1: SCHEDULE ---
           _buildSectionHeader("Night Mode Schedule", headerColor),
           Card(
@@ -150,29 +174,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           // --- SECTION 4: ABOUT ---
           _buildSectionHeader("About", Colors.grey),
-          Column(
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.info_outline),
-                title: const Text("Version"),
-                trailing: Text(_version, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: const Text("About FocusFlow"),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AboutScreen())
               ),
-              const ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.code),
-                title: Text("Developer"),
-                trailing: Text("Sanskar & Team"),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: Text(
-                  "Made with ❤️ for Digital Wellbeing",
-                  style: TextStyle(color: Colors.grey[500], fontSize: 12),
-                ),
-              )
-            ],
+            ),
           ),
+          const SizedBox(height: 20),
+          Center(
+            child: Text(
+              "Made with ❤️ for Digital Wellbeing",
+              style: TextStyle(color: Colors.grey[500], fontSize: 12),
+            ),
+          )
         ],
       ),
     );
